@@ -4,7 +4,7 @@ import os
 from preprocess_img import Preprocessor
 
 # heigth width c'est le size qu'on resize les images
-def fetchImage(nameOfModel, height, width):
+def fetchImage(nameOfModel, height=100, width=100):
     data = []
     labels = []
     proc = Preprocessor()
@@ -18,7 +18,3 @@ def fetchImage(nameOfModel, height, width):
     X = pd.DataFrame(data)
     y = np.array(labels)
     return X,y
-
-X,y = fetchImage("testmodel", 100, 100)
-print(X.shape)
-print(y.shape)
