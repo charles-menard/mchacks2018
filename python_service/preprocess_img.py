@@ -35,7 +35,7 @@ def ml_preprocessing(data,labels,variance,test_size,random_state):
     test_size: the size for the test by the split
     """
     scaled_data = scale(data)
-    pca = PCA(variance).fit(scaled_data)
-    components = pca.transform(scaled_data)
-    X_train, X_test, y_train, y_test= train_test_split(components, labels, test_size=test_size, random_state=random_state)
+    #pca = PCA(variance).fit(scaled_data)
+    #components = pca.transform(scaled_data)
+    X_train, X_test, y_train, y_test= train_test_split(scaled_data, labels, test_size=test_size, random_state=random_state)
     return X_train,X_test,y_train,y_test
