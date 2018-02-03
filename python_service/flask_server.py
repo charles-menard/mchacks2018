@@ -1,6 +1,7 @@
 from flask import Flask
 import os
 from url_image_extractor import Extractor
+from predict import pred
 app = Flask(__name__)
 
 @app.route("/")
@@ -21,6 +22,11 @@ def train(model):
     return "Hello World!"
 
 
-@app.route("/train/<model>/<path:url>")
+@app.route("/predict/<model>/<path:url>")
 def predict(model, url):
-    return "Hello World!"
+    directory = "./prediction_images/" + model
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    extractor = Extractor(directory)
+    extractor.extract(url, "temp")
+    return pred(model)
