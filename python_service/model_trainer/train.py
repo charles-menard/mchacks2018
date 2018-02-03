@@ -2,7 +2,8 @@ from sklearn.datasets import load_digits
 # Import
 from sklearn.preprocessing import scale
 from sklearn.cross_validation import train_test_split
-from ./../imgprocess_img import *
+from sklearn.decomposition import PCA
+
 
 # Split the `digits` data into training and test sets
 
@@ -13,7 +14,27 @@ targets=digits.target
 
 X_train, X_test, y_train, y_test, images_train, images_test = train_test_split(data, targets, digits.images, test_size=0.25, random_state=42)
 
-X_train = pca_data(data=X_train,variance=0.50)
+def pca_data(data,variance=0.50):
+    pca = PCA(variance).fit(data)
+    components = pca.transform(data)
+    return components
 
-#svm
-#def ml_svm(data=data_pca):
+#X_train = pca_data(data=X_train,variance=0.50)
+
+# Import the `svm` model
+from sklearn import svm
+
+# Create the SVC model
+svc_model = svm.SVC(gamma=0.001, C=100., kernel='linear')
+
+# Fit the data to the SVC model
+svc_model.fit(X_train, y_train)
+
+# Predict the label of `X_test`
+y_pred=svc_model.predict(X_test)
+
+# Import `metrics` from `sklearn`
+from sklearn import metrics
+
+# Print out the confusion matrix with `confusion_matrix()`
+print(metrics.confusion_matrix(y_test, y_pred))
