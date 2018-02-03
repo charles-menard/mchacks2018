@@ -6,7 +6,7 @@ import numpy as np
 
 def resize(filename, height, width):
     im = Image.open(filename)
-    return im.resize((height,width), Image.NEAREST)
+    return im.resize((height,width), Image.BILINEAR)
 
 def toGrey(image):
     return image.convert('L')
