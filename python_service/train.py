@@ -1,40 +1,45 @@
+#imports
 from sklearn.datasets import load_digits
-# Import
-from sklearn.preprocessing import scale
-from sklearn.cross_validation import train_test_split
-from sklearn.decomposition import PCA
-# Split the `digits` data into training and test sets
+from sklearn import metrics
+from preprocess_img import ml_preprocessing
+from sklearn import svm
+from saver import Saver
+from sklearn.grid_search import GridSearchCV
 
 # Loading data
 digits = load_digits()
-data = scale(digits.data)
-targets=digits.target
+data = digits.data
+labels=digits.target
 
-def pca_data(data,variance=0.50):
-    pca = PCA(variance).fit(data)
-    components = pca.transform(data)
-    return components
+def train_svc(data,labels):
+    # create the test and data for training
+    X_train, X_test, y_train, y_test = ml_preprocessing(data,labels,variance=0.75,test_size=0.25,random_state=42)
 
-data = pca_data(data=data,variance=0.75)
+    #Parameter candidates for the grid search of SVC
+    parameter_candidates = [
+      {'C': [1, 10, 100, 1000], 'kernel': ['linear']},
+      {'C': [1, 10, 100, 1000], 'gamma': [0.001, 0.0001], 'kernel': ['rbf']},]
 
-X_train, X_test, y_train, y_test, images_train, images_test = train_test_split(data, targets, digits.images, test_size=0.25, random_state=42)
+    #grid search
+    clf = GridSearchCV(estimator=svm.SVC(), param_grid=parameter_candidates, n_jobs=-1)
 
+    #fitting the model
+    clf.fit(X_train, y_train)
 
+    # Save model
+    my_saver = Saver()
+    my_saver.save(clf, "./trained_models", "number_model")
 
-# Import the `svm` model
-from sklearn import svm
+    # Print out the results
+    print('Best score for training data:', clf.best_score_)
+    print('Best `C`:',clf.best_estimator_.C)
+    print('Best kernel:',clf.best_estimator_.kernel)
+    print('Best `gamma`:',clf.best_estimator_.gamma)
 
-# Create the SVC model
-svc_model = svm.SVC(gamma=0.001, C=100., kernel='linear')
+    # Predict the label of `X_test`
+    y_pred=clf.predict(X_test)
 
-# Fit the data to the SVC model
-svc_model.fit(X_train, y_train)
-
-# Predict the label of `X_test`
-y_pred=svc_model.predict(X_test)
-
-# Import `metrics` from `sklearn`
-from sklearn import metrics
-
-# Print out the confusion matrix with `confusion_matrix()`
-print(metrics.confusion_matrix(y_test, y_pred))
+    # Print out the confusion matrix with `confusion_matrix()`
+    print(metrics.confusion_matrix(y_test, y_pred))
+    
+train_svc(data,labels)

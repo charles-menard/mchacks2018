@@ -17,8 +17,22 @@ class Preprocessor:
         return np.array(toGrey(resize(filename, height, width)))
 
 
-    #pca
-    def pca_data(self, data,variance=0.50):
-        pca = PCA(variance).fit(data)
-        components = pca.transform(data)
-        return components
+
+
+from sklearn.preprocessing import scale
+from sklearn.decomposition import PCA
+from sklearn.cross_validation import train_test_split
+
+
+def ml_preprocessing(data,labels,variance,test_size,random_state):
+    """
+    Function to scale, do principal component analysis and split the data in train and test.
+
+    variance: variance explained by pca
+    test_size: the size for the test by the split
+    """
+    scaled_data = scale(data)
+    pca = PCA(variance).fit(scaled_data)
+    components = pca.transform(scaled_data)
+    X_train, X_test, y_train, y_test= train_test_split(components, labels, test_size=test_size, random_state=random_state)
+    return X_train,X_test,y_train,y_test
