@@ -1,14 +1,19 @@
 from sklearn.datasets import load_digits
 # Import
 from sklearn.preprocessing import scale
-from preprocess_img import pca_data
+from sklearn.cross_validation import train_test_split
+from ./../imgprocess_img import *
+
+# Split the `digits` data into training and test sets
 
 # Loading data
 digits = load_digits()
-data_img = scale(digits.data)
-target_img=digits.target
+data = scale(digits.data)
+targets=digits.target
 
-data_pca = pca_data(data_img,0.50)
+X_train, X_test, y_train, y_test, images_train, images_test = train_test_split(data, targets, digits.images, test_size=0.25, random_state=42)
+
+X_train = pca_data(data=X_train,variance=0.50)
 
 #svm
 #def ml_svm(data=data_pca):
