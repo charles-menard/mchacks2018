@@ -12,14 +12,16 @@ digits = load_digits()
 data = scale(digits.data)
 targets=digits.target
 
-X_train, X_test, y_train, y_test, images_train, images_test = train_test_split(data, targets, digits.images, test_size=0.25, random_state=42)
-
 def pca_data(data,variance=0.50):
     pca = PCA(variance).fit(data)
     components = pca.transform(data)
     return components
 
-#X_train = pca_data(data=X_train,variance=0.50)
+data = pca_data(data=data,variance=0.75)
+
+X_train, X_test, y_train, y_test, images_train, images_test = train_test_split(data, targets, digits.images, test_size=0.25, random_state=42)
+
+
 
 # Import the `svm` model
 from sklearn import svm
