@@ -8,13 +8,14 @@ class Preprocessor:
 
     def resize(self, filename, height, width):
         im = Image.open(filename)
-        return im.resize((height,width), Image.BILINEAR)
+        return im.resize((height,width), Image.NEAREST)
 
     def toGrey(self, image):
         return image.convert('L')
 
     def processImage(self, filename, height, width):
-        return np.array(toGrey(resize(filename, height, width)))
+        im = np.array(self.toGrey(self.resize(filename, height, width)))
+        return im.flatten()
 
 
     #pca

@@ -1,31 +1,24 @@
 import pandas as pd
 import numpy as np
 import os
-from PIL import Image
-
-def resize(filename, height, width):
-    im = Image.open(filename)
-    return im.resize((height,width), Image.BILINEAR)
-
-def toGrey(image):
-    return image.convert('L')
-
-def processImage(filename, height, width):
-    return np.array(toGrey(resize(filename, height, width)))
+from preprocess_img import Preprocessor
 
 # heigth width c'est le size qu'on resize les images
-def fetchImage(nameOfModel, height=100, width=100):
-    X = pd.DataFrame()
-    y = []
-    for classes in os.listdir("../models/"+ nameOfModel + "/"):
-        for imgName in os.listdir("../models/"+ nameOfModel + "/" + classes):
-            imagearr = processImage("../models/"+nameOfModel+"/"+classes+"/"+imgName,
+def fetchImage(nameOfModel, height, width):
+    data = []
+    labels = []
+    proc = Preprocessor()
+    for classes in os.listdir("models/"+ nameOfModel + "/"):
+        for imgName in os.listdir("models/"+ nameOfModel + "/" + classes):
+
+            imagearr = proc.processImage("models/"+nameOfModel+"/"+classes+"/"+imgName ,
                                             height, width)
-            X = X.append(imagearr)
-            y = y + [classes]
-    y = np.array(y).T
+            data = data + [imagearr]
+            labels = labels + [classes]
+    X = pd.DataFrame(data)
+    y = np.array(labels)
     return X,y
 
-X,y = fetchImage("testmodel")
-print(X)
-print(y)
+X,y = fetchImage("testmodel", 100, 100)
+print(X.shape)
+print(y.shape)
