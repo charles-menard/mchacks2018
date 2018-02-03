@@ -2,13 +2,7 @@ from sklearn.datasets import load_digits
 # Import
 from sklearn.preprocessing import scale
 from sklearn.cross_validation import train_test_split
-<<<<<<< HEAD:python_service/train.py
-from .python_service.img import Preprocessor
-=======
 from sklearn.decomposition import PCA
-
->>>>>>> 83efbbc277f1b11bf11f0e70b463afd24f09bc9c:python_service/model_trainer/train.py
-
 # Split the `digits` data into training and test sets
 
 # Loading data
