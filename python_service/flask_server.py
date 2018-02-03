@@ -15,3 +15,12 @@ def show_user_profile(model, image_class, url):
     extractor = Extractor(directory)
     extractor.extract(url)
     return url
+
+@app.route("/train/<model>")
+def train(model):
+    return "Hello World!"
+
+
+@app.route("/train/<model>/<path:url>")
+def predict(model, url):
+    return "Hello World!"

@@ -2,7 +2,7 @@ from sklearn.datasets import load_digits
 # Import
 from sklearn.preprocessing import scale
 from sklearn.cross_validation import train_test_split
-from ./../imgprocess_img import *
+from .python_service.img import Preprocessor
 
 # Split the `digits` data into training and test sets
 
