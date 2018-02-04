@@ -9,6 +9,7 @@ from sklearn.grid_search import GridSearchCV
 import matplotlib.pyplot as plt
 import seaborn as sns
 from fetch_data import fetchImage
+from sklearn.neural_network import MLPClassifier
 
 # Loading data
 
@@ -17,7 +18,7 @@ from fetch_data import fetchImage
 
 def trainModel(nom_du_model, classifier="svm"):
     # create the test and data for training
-    X, y  = fetchImage(nom_du_model)
+    X, y, listOfLabels  = fetchImage(nom_du_model)
     X_train, X_test, y_train, y_test = ml_preprocessing(X,y,variance=0.75,test_size=0.25,random_state=42)
 
 
@@ -33,17 +34,22 @@ def trainModel(nom_du_model, classifier="svm"):
         "bootstrap" : [True, False]
         }]
         estimator = ExtraTreesClassifier()
+    elif classifier == "mlp":
+        parameters_canditates =[
+        {"activation":["identity", "logistic", "tanh", "relu"],
+        "solver":["lbfgs","sgd","adam"],"alpha":[1e-05],"hidden_layer_sizes":[(5,2)],"random_state":[1]},
+        ]
+        estimator = MLPClassifier()
 
     #grid search
     clf = GridSearchCV(estimator=estimator, param_grid=parameters_canditates, n_jobs=-1)
-
     #fitting the model
     clf.fit(X_train, y_train)
 
     # Save model
     my_saver = Saver()
     my_saver.save(clf, "./trained_models", nom_du_model+"_model")
-    clf = my_saver.load("./trained_models", nom_du_model+"_model")
+    #clf = my_saver.load("./trained_models", nom_du_model+"_model")
 
     # Print out the results
     """
@@ -64,5 +70,6 @@ def trainModel(nom_du_model, classifier="svm"):
     plt.xlabel('true label')
     plt.ylabel('predicted label')
     plt.savefig("./trained_models/accuracy_"+nom_du_model+"_model.png")
+    plt.show()
 
-#train("number",data,labels,estimator,parameters_canditates)
+trainModel("fruits",classifier="mlp")
