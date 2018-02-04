@@ -36,7 +36,6 @@ def trainModel(nom_du_model, classifier="svm"):
 
     #grid search
     clf = GridSearchCV(estimator=estimator, param_grid=parameters_canditates, n_jobs=-1)
-
     #fitting the model
     clf.fit(X_train, y_train)
 
@@ -64,5 +63,6 @@ def trainModel(nom_du_model, classifier="svm"):
     plt.xlabel('true label')
     plt.ylabel('predicted label')
     plt.savefig("./trained_models/accuracy_"+nom_du_model+"_model.png")
+    plt.show()
 
-#train("number",data,labels,estimator,parameters_canditates)
+trainModel("fruits")
