@@ -3,6 +3,7 @@ from sklearn.datasets import load_digits
 from sklearn import metrics
 from preprocess_img import ml_preprocessing
 from sklearn import svm
+from sklearn.ensemble import RandomForestClassifier
 from saver import Saver
 from sklearn.grid_search import GridSearchCV
 import matplotlib.pyplot as plt
@@ -14,14 +15,23 @@ from fetch_data import fetchImage
 #Parameter candidates for the grid search of SVC
 
 
-def trainModel(nom_du_model):
+def trainModel(nom_du_model, classifier="svm"):
     # create the test and data for training
     X, y  = fetchImage(nom_du_model)
     X_train, X_test, y_train, y_test = ml_preprocessing(X,y,variance=0.75,test_size=0.25,random_state=42)
-    parameters_canditates= [
-    {'C': [1, 10, 100, 1000], 'kernel': ['linear']},
-    {'C': [1, 10, 100, 1000], 'gamma': [0.001, 0.0001], 'kernel': ['rbf']},]
-    estimator = svm.SVC()
+
+
+    if classifier = "svm" :
+        parameters_canditates= [
+        {'C': [1, 10, 100, 1000], 'kernel': ['linear']},
+        {'C': [1, 10, 100, 1000], 'gamma': [0.001, 0.0001], 'kernel': ['rbf']},]
+        estimator = svm.SVC()
+    elif classifier = "rdf" :
+        parameters_canditates=[
+        {tree__n_estimators=200],
+        tree__criterion=["gini", "entropy"],tree__max_features= ["auto", "sqrt", "log2"],
+        tree__bootstrap=[True, False]}]
+        estimator = rdf.RandomForestClassifier()
 
     #grid search
     clf = GridSearchCV(estimator=estimator, param_grid=parameters_canditates, n_jobs=-1)
