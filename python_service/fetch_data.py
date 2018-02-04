@@ -7,8 +7,10 @@ from preprocess_img import Preprocessor
 def fetchImage(nameOfModel, height=100, width=100):
     data = []
     labels = []
+    listOfLabels = {}
     proc = Preprocessor()
-    for classes in os.listdir("models/"+ nameOfModel + "/"):
+    for i, classes in enumerate(os.listdir("models/"+ nameOfModel + "/")):
+        listOfLabels[i] = nameOfModel
         for imgName in os.listdir("models/"+ nameOfModel + "/" + classes):
 
             imagearr = proc.processImage("models/"+nameOfModel+"/"+classes+"/"+imgName ,
@@ -17,4 +19,4 @@ def fetchImage(nameOfModel, height=100, width=100):
             labels = labels + [classes]
     X = pd.DataFrame(data)
     y = np.array(labels)
-    return X,y
+    return X,y,listOfLabels

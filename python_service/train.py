@@ -17,7 +17,7 @@ from fetch_data import fetchImage
 
 def trainModel(nom_du_model, classifier="svm"):
     # create the test and data for training
-    X, y  = fetchImage(nom_du_model)
+    X, y, listOfLabels  = fetchImage(nom_du_model)
     X_train, X_test, y_train, y_test = ml_preprocessing(X,y,variance=0.75,test_size=0.25,random_state=42)
 
 
