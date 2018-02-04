@@ -30,3 +30,5 @@ def predict(model, url):
     extractor = Extractor(directory)
     extractor.extract(url, "temp")
     return str(pred(model)[0])
+
+app.run(host='0.0.0.0')
