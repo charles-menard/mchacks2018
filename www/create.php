@@ -82,10 +82,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 <body>
 	<h1>Create new model</h1>
 	<p>
-		<a href="add.php">Broken, plz use this</a>
+		<a style="font-size: 40px;" href="add.php">Broken, plz use this</a>
 		<form action="create.php" method="POST" enctype="multipart/form-data">
-			<h2>Category: <input type="text" name="category"></h2>
-			Add sub-category: <button id="addsubcat" type="button" onclick="add_subcat()">+</button><br>
+			<h2>Model: <input type="text" name="category"></h2>
+			Add class: <button id="addsubcat" type="button" onclick="add_subcat()">+</button><br>
 			<input type="submit" value="Submit">
 		</form>
 	</p>

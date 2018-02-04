@@ -1,10 +1,27 @@
+html {
+	min-height: 100%;
+	position: relative;
+}
 body {
-	margin:40px auto;
-	max-width:650px;
+	background-color: #e0e0e0;
+	height: 100%;
+}
+#main {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+	height: 100%;
+	background-color: #e8e8e8;
+	width: 60%;
 	line-height:1.6;
 	font-size:18px;
 	color:#444;
-	padding:0 10px;
+}
+#header {
+	
 }
 h1, h2, h3 {
 	line-height:1.2;
