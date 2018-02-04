@@ -1,7 +1,8 @@
 <?php
+$model_dir = "/home/varnaud/project/mchacks2018/python_service/models/";
 function echo_models()
 {
-	$model_dir = "model/";
+	$model_dir = "/home/varnaud/project/mchacks2018/python_service/models/";
 	$list = scandir($model_dir);
 	$list = array_diff($list, array('..', '.'));
 	foreach ($list as $model)
@@ -9,13 +10,19 @@ function echo_models()
 		echo "<option value='".$model."'>";
 	}
 }
-$model_dir = "model/";
+function get_accuracy_model($mod)
+{
+	$accuracy_dir = "hardcode/";
+	return $accuracy_dir . "accuracy_" . $mod . "_model.png";
+}
 $model = htmlspecialchars($_GET["model"]);
 $result = "";
+$host = "http://127.0.0.1:5000/predict/";
 if (file_exists($model_dir . $model))
 {
 	if ($_SERVER["REQUEST_METHOD"] == "POST")
 	{
+		$model = htmlspecialchars($_POST["model"]);
 		if (empty($model))
 			$file_errors[] = "Select a model first";
 		else
@@ -39,7 +46,9 @@ if (file_exists($model_dir . $model))
 				if (move_uploaded_file($tmp_name, $upload_name))
 				{
 					$success = "Image UPLOADED.";
-					$result = "Doing stuff inside some python script.";
+					$result = file_get_contents($host . $model . "/" . "http://localhost/mchacks/uploads/" . hash("sha1", $tmp_name).".jpg");
+					//unlink($upload_name);
+					//$result = "Doing stuff inside some python script.";
 				}
 				else
 					$file_errors[] = "IMAGE <u>NOT</u> UPLOADED";
@@ -92,6 +101,10 @@ else
 .error {
 	color: red;
 }
+#result {
+	font-size: 18px;
+	font-family: Comic Sans;
+}
   </style>
 </head>
 <body>
@@ -129,20 +142,22 @@ else
 			<div class="error"><?php foreach ($file_errors as $d) echo $d . "<br>"; ?></div>
 			<div class="success"><?php echo $success; ?></div>
 			<form action="model.php" method="GET" class="form-group">
-				<label for="modelinput">Select a model</label>
-				<input id="modelinput" class="form-control" type="text" name="model" list="model_list">
 				<datalist id="model_list">
 					<?php echo_models(); ?>
 				</datalist>
+				<label for="modelinput">Select a model</label>
+				<input id="modelinput" class="form-control" type="text" name="model" list="model_list">
 				<br>
 				<input type="submit" class="form-control" value="Go">
 			</form>
+			<?php if (!empty($model)) echo "<img src='" . get_accuracy_model($model) . "'>"; ?>
 			<form method="POST" action="model.php" enctype="multipart/form-data" class="form-group">
 				<label for="inputfile">Image to predict:</label><input class="form-control" id="inputfile" type="file" name="image"><br>
+				<input type="hidden" name="model" value="<?php echo $model; ?>">
 				<input type="submit" class="form-control">
 			</form>
 			<div id="result">
-				<?php echo $result; ?>
+				<?php if (!empty($result)) echo "Our AI gave this image the following description: " . "<strong>" . $result . "</strong>"; ?>
 			</div>
 		</p>
 	</div>
