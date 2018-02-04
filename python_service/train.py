@@ -9,6 +9,7 @@ from sklearn.grid_search import GridSearchCV
 import matplotlib.pyplot as plt
 import seaborn as sns
 from fetch_data import fetchImage
+from sklearn.neural_network import MLPClassifier
 
 # Loading data
 
@@ -33,6 +34,12 @@ def trainModel(nom_du_model, classifier="svm"):
         "bootstrap" : [True, False]
         }]
         estimator = ExtraTreesClassifier()
+    elif classifier == "mlp":
+        parameters_canditates =[
+        {"activation":["identity", "logistic", "tanh", "relu"],
+        "solver":["lbfgs","sgd","adam"],"alpha":[1e-05],"hidden_layer_sizes":[(5,2)],"random_state":[1]},
+        ]
+        estimator = MLPClassifier()
 
     #grid search
     clf = GridSearchCV(estimator=estimator, param_grid=parameters_canditates, n_jobs=-1)
@@ -42,7 +49,7 @@ def trainModel(nom_du_model, classifier="svm"):
     # Save model
     my_saver = Saver()
     my_saver.save(clf, "./trained_models", nom_du_model+"_model")
-    clf = my_saver.load("./trained_models", nom_du_model+"_model")
+    #clf = my_saver.load("./trained_models", nom_du_model+"_model")
 
     # Print out the results
     """
@@ -65,4 +72,4 @@ def trainModel(nom_du_model, classifier="svm"):
     plt.savefig("./trained_models/accuracy_"+nom_du_model+"_model.png")
     plt.show()
 
-trainModel("fruits")
+trainModel("fruits",classifier="mlp")
