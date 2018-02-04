@@ -13,14 +13,12 @@ def pred(model_name="number"):
 
     #preprocessing of images
     im = pre.processImage("prediction_images/" + model_name + "/temp.jpg", 8, 8)
-    print(im.shape)
-    im = im.reshape(-1,1)
-    print(im.shape)
-    return model.predict(im.T)
+    
+    #im = im.reshape(-1,1)
+    
+    return model.predict(im.reshape(-1,1).T)
 
 
 
-
-print(pred())
 
 

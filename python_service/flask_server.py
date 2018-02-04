@@ -29,4 +29,4 @@ def predict(model, url):
         os.makedirs(directory)
     extractor = Extractor(directory)
     extractor.extract(url, "temp")
-    return pred(model)
+    return str(pred(model)[0])
