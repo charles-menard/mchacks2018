@@ -3,7 +3,7 @@ from sklearn.decomposition import PCA
 from PIL import Image
 import numpy as np
 import matplotlib.pyplot  as plt
-
+from sklearn.preprocessing import scale
 
 class Preprocessor:
     def __init__(self):
@@ -18,7 +18,8 @@ class Preprocessor:
 
     def processImage(self, filename, height=100, width=100):
         im = np.array(self.toGrey(self.resize(filename, height, width)))
-        return im.flatten()
+        im = 255 - im.flatten()
+        return scale(im)
 
 
 
