@@ -10,13 +10,9 @@ def pred(model_name="number"):
     sav=Saver()
     model = sav.load("trained_models/", model_name+ "_model")
 
-    #preprocessing of images
 
     im = pre.processImage("prediction_images/" + model_name + "/temp.jpg",8 ,8)
 
-    #prediction = model.predict(im.reshape(-1,1).T)
+    prediction = model.predict(im.reshape(1,-1))
 
-    return prediction
-
-
-print(np.unique(pred()))
+    return str(predictions[0])
