@@ -13,12 +13,12 @@ textarea, input {
 	font-size: 16px;
 	font-family: Georgia, DejaVu Serif;
 }
-#success {
+.success {
 	color: green;
 }
-#error {
+.error {
 	color: red;
 }
-#debug {
+.debug {
 	color: orange;
 }

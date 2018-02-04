@@ -2,13 +2,16 @@
 from sklearn.decomposition import PCA
 from PIL import Image
 import numpy as np
+import matplotlib.pyplot  as plt
+
+
 class Preprocessor:
     def __init__(self):
         self.pre = "initiated"
 
     def resize(self, filename, height=100, width=100):
         im = Image.open(filename)
-        return im.resize((height,width), Image.NEAREST)
+        return im.resize((height,width), Image.BICUBIC)
 
     def toGrey(self, image):
         return image.convert('L')
@@ -16,8 +19,6 @@ class Preprocessor:
     def processImage(self, filename, height=100, width=100):
         im = np.array(self.toGrey(self.resize(filename, height, width)))
         return im.flatten()
-
-
 
 
 

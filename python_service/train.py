@@ -5,6 +5,8 @@ from preprocess_img import ml_preprocessing
 from sklearn import svm
 from saver import Saver
 from sklearn.grid_search import GridSearchCV
+import matplotlib.pyplot as plt
+import seaborn as sns
 #from fetch_data import fetchImage
 
 # Loading data
@@ -31,6 +33,7 @@ def train(nom_du_model,data,labels,estimator,parameters_canditates):
     # Save model
     my_saver = Saver()
     my_saver.save(clf, "./trained_models", nom_du_model+"_model")
+    clf = my_saver.load("./trained_models", nom_du_model+"_model")
 
     # Print out the results
     print('Best score for training data:', clf.best_score_)
@@ -42,6 +45,13 @@ def train(nom_du_model,data,labels,estimator,parameters_canditates):
     y_pred=clf.predict(X_test)
 
     # Print out the confusion matrix
-    print(metrics.confusion_matrix(y_test, y_pred))
+    confusion = metrics.confusion_matrix(y_test, y_pred)
+
+    theta = metrics.accuracy_score(y_pred, y_test)
+    sns.heatmap(confusion.T, square=True, annot=True, fmt='d', cbar=False)
+    plt.title("Accuracy score %.2f" % theta)
+    plt.xlabel('true label')
+    plt.ylabel('predicted label')
+    plt.savefig("./trained_models/accuracy_"+nom_du_model+"_model.png")
 
 train("number",data,labels,estimator,parameters_canditates)
