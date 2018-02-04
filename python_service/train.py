@@ -70,6 +70,5 @@ def trainModel(nom_du_model, classifier="svm"):
     plt.xlabel('true label')
     plt.ylabel('predicted label')
     plt.savefig("./trained_models/accuracy_"+nom_du_model+"_model.png")
-    plt.show()
 
-trainModel("fruits",classifier="mlp")
+#trainModel("fruits",classifier="svm")
