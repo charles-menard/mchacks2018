@@ -3,7 +3,7 @@ from sklearn.datasets import load_digits
 from sklearn import metrics
 from preprocess_img import ml_preprocessing
 from sklearn import svm
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import ExtraTreesClassifier
 from saver import Saver
 from sklearn.grid_search import GridSearchCV
 import matplotlib.pyplot as plt
@@ -21,17 +21,18 @@ def trainModel(nom_du_model, classifier="svm"):
     X_train, X_test, y_train, y_test = ml_preprocessing(X,y,variance=0.75,test_size=0.25,random_state=42)
 
 
-    if classifier = "svm" :
+    if classifier == "svm" :
         parameters_canditates= [
         {'C': [1, 10, 100, 1000], 'kernel': ['linear']},
         {'C': [1, 10, 100, 1000], 'gamma': [0.001, 0.0001], 'kernel': ['rbf']},]
         estimator = svm.SVC()
-    elif classifier = "rdf" :
-        parameters_canditates=[
-        {tree__n_estimators=200],
-        tree__criterion=["gini", "entropy"],tree__max_features= ["auto", "sqrt", "log2"],
-        tree__bootstrap=[True, False]}]
-        estimator = rdf.RandomForestClassifier()
+    elif classifier == "rdf" :
+        parameters_canditates=[{
+        "criterion" : ["gini", "entropy"],
+        "max_features" : ["auto", "sqrt", "log2"],
+        "bootstrap" : [True, False]
+        }]
+        estimator = ExtraTreesClassifier()
 
     #grid search
     clf = GridSearchCV(estimator=estimator, param_grid=parameters_canditates, n_jobs=-1)
@@ -45,11 +46,12 @@ def trainModel(nom_du_model, classifier="svm"):
     clf = my_saver.load("./trained_models", nom_du_model+"_model")
 
     # Print out the results
+    """
     print('Best score for training data:', clf.best_score_)
     print('Best `C`:',clf.best_estimator_.C)
     print('Best kernel:',clf.best_estimator_.kernel)
     print('Best `gamma`:',clf.best_estimator_.gamma)
-
+    """
     # prediction of labels
     y_pred=clf.predict(X_test)
 

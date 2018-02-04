@@ -20,7 +20,7 @@ def show_user_profile(model, image_class, url):
 
 @app.route("/train/<model>")
 def train(model):
-    trainModel(model)
+    trainModel(model, "rdf")
     return "Hello World!"
 
 
