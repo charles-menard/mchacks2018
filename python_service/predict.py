@@ -1,8 +1,7 @@
 from saver import Saver
 from preprocess_img import Preprocessor
 from PIL import Image
-import urllib.request
-import io
+
 import numpy as np
 
 def pred(model_name="number"):
@@ -14,6 +13,6 @@ def pred(model_name="number"):
     #preprocessing of images
     im = pre.processImage("prediction_images/" + model_name + "/temp.jpg")
 
-    
+
 
     return model.predict(im.reshape(-1,1).T)
