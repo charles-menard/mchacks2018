@@ -7,22 +7,21 @@ from saver import Saver
 from sklearn.grid_search import GridSearchCV
 import matplotlib.pyplot as plt
 import seaborn as sns
-#from fetch_data import fetchImage
+from fetch_data import fetchImage
 
 # Loading data
-digits = load_digits()
-data = digits.data
-labels=digits.target
 
 #Parameter candidates for the grid search of SVC
-parameters_canditates= [
-  {'C': [1, 10, 100, 1000], 'kernel': ['linear']},
-  {'C': [1, 10, 100, 1000], 'gamma': [0.001, 0.0001], 'kernel': ['rbf']},]
-estimator = svm.SVC()
 
-def train(nom_du_model,data,labels,estimator,parameters_canditates):
+
+def trainModel(nom_du_model):
     # create the test and data for training
-    X_train, X_test, y_train, y_test = ml_preprocessing(data,labels,variance=0.75,test_size=0.25,random_state=42)
+    X, y  = fetchImage(nom_du_model)
+    X_train, X_test, y_train, y_test = ml_preprocessing(X,y,variance=0.75,test_size=0.25,random_state=42)
+    parameters_canditates= [
+    {'C': [1, 10, 100, 1000], 'kernel': ['linear']},
+    {'C': [1, 10, 100, 1000], 'gamma': [0.001, 0.0001], 'kernel': ['rbf']},]
+    estimator = svm.SVC()
 
     #grid search
     clf = GridSearchCV(estimator=estimator, param_grid=parameters_canditates, n_jobs=-1)
@@ -54,4 +53,4 @@ def train(nom_du_model,data,labels,estimator,parameters_canditates):
     plt.ylabel('predicted label')
     plt.savefig("./trained_models/accuracy_"+nom_du_model+"_model.png")
 
-train("number",data,labels,estimator,parameters_canditates)
+#train("number",data,labels,estimator,parameters_canditates)

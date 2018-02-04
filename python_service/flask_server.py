@@ -2,6 +2,7 @@ from flask import Flask
 import os
 from url_image_extractor import Extractor
 from predict import pred
+from train import trainModel
 app = Flask(__name__)
 
 @app.route("/")
@@ -19,6 +20,7 @@ def show_user_profile(model, image_class, url):
 
 @app.route("/train/<model>")
 def train(model):
+    trainModel(model)
     return "Hello World!"
 
 
@@ -31,4 +33,3 @@ def predict(model, url):
     extractor.extract(url, "temp")
     return str(pred(model)[0])
 
-app.run(host='0.0.0.0')
