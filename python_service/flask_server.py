@@ -3,6 +3,7 @@ import os
 from url_image_extractor import Extractor
 from predict import pred
 from train import trainModel
+from flask import send_from_directory
 app = Flask(__name__)
 
 @app.route("/")
@@ -32,5 +33,12 @@ def predict(model, url):
     extractor = Extractor(directory)
     extractor.extract(url, "temp")
     return str(pred(model)[0])
+
+
+@app.route('/get_image/<model>')
+def get_image(model):
+    image_name = "accuracy_" + model + "_model.png"
+    path = "./trained_models/"
+    return send_from_directory(path, image_name, mimetype='image/gif')
 
 app.run(host='0.0.0.0')
