@@ -9,14 +9,14 @@ class Preprocessor:
     def __init__(self):
         self.pre = "initiated"
 
-    def resize(self, filename, height=100, width=100):
+    def resize(self, filename, height, width):
         im = Image.open(filename)
         return im.resize((height,width), Image.BICUBIC)
 
     def toGrey(self, image):
         return image.convert('L')
 
-    def processImage(self, filename, height=100, width=100):
+    def processImage(self, filename, height, width):
         im = np.array(self.toGrey(self.resize(filename, height, width)))
         im = 255 - im.flatten()
         return scale(im)
