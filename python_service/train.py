@@ -33,6 +33,7 @@ def train(nom_du_model,data,labels,estimator,parameters_canditates):
     # Save model
     my_saver = Saver()
     my_saver.save(clf, "./trained_models", nom_du_model+"_model")
+    clf = my_saver.load("./trained_models", nom_du_model+"_model")
 
     # Print out the results
     print('Best score for training data:', clf.best_score_)

@@ -1,7 +1,7 @@
 from saver import Saver
 from preprocess_img import Preprocessor
 from PIL import Image
-
+from sklearn.datasets import load_digits
 import numpy as np
 
 def pred(model_name="number"):
@@ -11,8 +11,13 @@ def pred(model_name="number"):
     model = sav.load("trained_models/", model_name+ "_model")
 
     #preprocessing of images
-    im = pre.processImage("prediction_images/" + model_name + "/temp.jpg")
+    #im = pre.processImage("prediction_images/" + model_name + "/temp.jpg",8, 8)
+
+    digits = load_digits()
+    data = digits.data
+    #prediction = model.predict(im.reshape(-1,1).T)
+    prediction = model.predict(data)
+    return prediction
 
 
-
-    return model.predict(im.reshape(-1,1).T)
+print(np.unique(pred()))
