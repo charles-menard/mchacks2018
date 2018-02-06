@@ -1,3 +1,4 @@
 # mchacks2018
-Go on http://abc.superh4xx0rzmachinelearning.tech/model.php
-  for libre image recognition.
+A platform for building and hosting machine learning model.
+Go on http://www.superh4xx0rzmachinelearning.tech/model.php
+
